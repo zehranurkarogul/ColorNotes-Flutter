@@ -119,9 +119,7 @@ lib/
 
 ## Ekran Görüntüleri
 
-[Uygulama ekran görüntüleri buraya eklenecek]
-
-  
+assets/icons
 
 ## Projeye Katkı Sağlama
 
