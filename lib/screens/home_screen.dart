@@ -34,9 +34,25 @@ class _HomeScreenState extends State<HomeScreen> {
         title: const Text('ColorNotes'),
         backgroundColor: Theme.of(context).colorScheme.primary,
       ),
+      
       drawer: Drawer(
         child: Column(
           children: [
+            UserAccountsDrawerHeader(
+              currentAccountPicture: CircleAvatar(
+                backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+                child: Icon(
+                  CupertinoIcons.person_circle,
+                  size: 50,
+                  color: Theme.of(context).colorScheme.onPrimaryContainer,
+                ),
+              ),
+              accountName: Text("Hoşgeldiniz"),
+              accountEmail: null,
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.primary,
+              ),
+            ),
             IconButton(
             icon: Icon(
               _isDarkMode ? CupertinoIcons.sun_max : CupertinoIcons.moon_fill,
@@ -49,6 +65,7 @@ class _HomeScreenState extends State<HomeScreen> {
               widget.onThemeChange(); 
             },
           ),
+          
             ListTile(
               leading: const Icon(CupertinoIcons.home),
               iconColor: Theme.of(context).colorScheme.primary,
@@ -70,15 +87,19 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: Container(
         decoration: const BoxDecoration(
-        ),
-        child: GridView.builder(
-          padding: const EdgeInsets.all(8),
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            mainAxisSpacing: 8,
-            crossAxisSpacing: 8,
-            childAspectRatio: 1.2,
-          ),
+  image: DecorationImage(
+    image: AssetImage('assets/images/back.jpg'),
+    fit: BoxFit.cover, // Arka planı tam olarak kaplar
+  ),
+),
+child: GridView.builder(
+  padding: const EdgeInsets.all(8),
+  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+    crossAxisCount: 2,
+    mainAxisSpacing: 8,
+    crossAxisSpacing: 8,
+    childAspectRatio: 1.2,
+  ),
           itemCount: notes.length,
           itemBuilder: (context, index) {
             return GestureDetector(
@@ -146,11 +167,31 @@ class _HomeScreenState extends State<HomeScreen> {
         onPressed: _addNewNote,
         child: const Icon(CupertinoIcons.add),
       ),
+      bottomNavigationBar: BottomNavigationBar(
+  showSelectedLabels: false, 
+  showUnselectedLabels: false, 
+  selectedItemColor: Theme.of(context).colorScheme.primary, 
+  unselectedItemColor: Theme.of(context).colorScheme.primary.withOpacity(0.5), 
+  items: const [
+    BottomNavigationBarItem(
+      icon: Icon(CupertinoIcons.home),
+      label: 'Ana Sayfa', 
+    ),
+    BottomNavigationBarItem(
+      icon: Icon(CupertinoIcons.person),
+      label: 'Profil', 
+    ),
+  ],
+        onTap: (index) {
+          if (index == 0) {
+          } else if (index == 1) {
+            context.go('/login'); 
+          }
+        },
+      ),
     );
   }
 }
-
-
 
 // Yeni not ekranı
 class AddNoteScreen extends StatefulWidget {
@@ -258,6 +299,7 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
                 textInputAction: TextInputAction.newline,
                 decoration: InputDecoration(
                   hintText: 'Notunuzu buraya yazın...',
+                  iconColor: Theme.of(context).colorScheme.secondary,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),
