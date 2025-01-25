@@ -2,15 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key, required Null Function() onThemeChange});
+  final void Function() onThemeChange;
 
-  @override
+  const HomeScreen({super.key, required this.onThemeChange});
   _HomeScreenState createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
   List<Map<String, dynamic>> notes = [];
-
   Future<void> _addNewNote() async {
     final result = await Navigator.push(
       context,
@@ -25,36 +24,44 @@ class _HomeScreenState extends State<HomeScreen> {
       });
     }
   }
+  bool _isDarkMode = false;
+  
 
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('ColorNotes'),
-        backgroundColor: const Color.fromARGB(255, 229, 192, 255),
+        backgroundColor: Theme.of(context).colorScheme.primary,
       ),
       drawer: Drawer(
-        child: Container(
-          color: const Color.fromARGB(255, 229, 192, 255), 
-          child: Column(
-            children: [
-              ListTile(
-                leading: const Icon(CupertinoIcons.home),
-                title: const Text('Ana Sayfa'),
-                onTap: () {
-                  Navigator.pop(context);
-                },
-              ),
-            ],
+        child: Column(
+          children: [
+            IconButton(
+            icon: Icon(
+              _isDarkMode ? CupertinoIcons.sun_max : CupertinoIcons.moon_fill,
+            ),
+            color: Theme.of(context).colorScheme.primary,
+            onPressed: () {
+              setState(() {
+                _isDarkMode = !_isDarkMode; 
+              });
+              widget.onThemeChange(); 
+            },
           ),
+            ListTile(
+              leading: const Icon(CupertinoIcons.home),
+              iconColor: Theme.of(context).colorScheme.primary,
+              title: const Text('Ana Sayfa'),
+              textColor: Theme.of(context).colorScheme.primary,
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+          ],
         ),
       ),
       body: Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('assets/images/background.jpg'),
-            fit: BoxFit.cover,
-          ),
+        decoration: const BoxDecoration(
         ),
         child: GridView.builder(
           padding: const EdgeInsets.all(8),
@@ -105,7 +112,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     Align(
                       alignment: Alignment.topRight,
                       child: IconButton(
-                        icon: const Icon(Icons.delete, color: Colors.white),
+                        icon: const Icon(Icons.delete),
                         onPressed: () {
                           setState(() {
                             notes.removeAt(index);
@@ -116,7 +123,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     Center(
                       child: Text(
                         notes[index]['content'],
-                        style: const TextStyle(color: Colors.white),
+                        style: const TextStyle(),
                         textAlign: TextAlign.center,
                       ),
                     ),
@@ -130,7 +137,6 @@ class _HomeScreenState extends State<HomeScreen> {
       floatingActionButton: FloatingActionButton(
         onPressed: _addNewNote,
         child: const Icon(CupertinoIcons.add),
-        backgroundColor: const Color.fromARGB(255, 246, 215, 255),
       ),
     );
   }
@@ -141,8 +147,6 @@ class _HomeScreenState extends State<HomeScreen> {
 // Yeni not ekranı
 class AddNoteScreen extends StatefulWidget {
   const AddNoteScreen({super.key});
-
-  @override
   _AddNoteScreenState createState() => _AddNoteScreenState();
 }
 
@@ -156,36 +160,52 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
     Color(0xFFFBFF90),
     Color(0xFFFFADF0),
     Color(0xFFA9FF8A),
+    Color(0xFF5773C6),
+    Color(0xFF784F9E),
+    Color(0xFFCF8CD1),
+    Color(0xFFDE6B8F),
   ];
 
   void _saveNote() {
-    if (_noteController.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Lütfen bir not yazın.')),
-      );
-      return;
-    }
-
-    if (_selectedColor == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Lütfen bir renk seçin.')),
-      );
-      return;
-    }
-
-    Navigator.pop(context, {
-      'content': _noteController.text,
-      'color': _selectedColor,
-    });
+  if (_noteController.text.isEmpty) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          'Lütfen bir not yazın.',
+          style: TextStyle(
+            color: Theme.of(context).colorScheme.primary, // Tema rengini burada ayarlıyoruz
+          ),
+        ),
+      ),
+    );
+    return;
   }
 
-  @override
+  if (_selectedColor == null) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          'Lütfen bir renk seçin.',
+          style: TextStyle(
+            color: Theme.of(context).colorScheme.primary, // Tema rengini burada ayarlıyoruz
+          ),
+        ),
+      ),
+    );
+    return;
+  }
+
+  Navigator.pop(context, {
+    'content': _noteController.text,
+    'color': _selectedColor,
+  });
+}
+
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 247, 237, 255),
       appBar: AppBar(
         title: const Text('Yeni Not Ekle'),
-        backgroundColor: const Color.fromARGB(255, 229, 192, 255),
+        backgroundColor: Theme.of(context).colorScheme.primary,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -194,7 +214,8 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
           children: [
             const Text(
               'Bir renk seçin:',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold,
+              color: Color.fromARGB(255, 229, 192, 255),),
             ),
             const SizedBox(height: 8),
             Wrap(
@@ -233,7 +254,7 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
                     borderRadius: BorderRadius.circular(8),
                   ),
                   filled: true,
-                  fillColor: Colors.white,
+                  fillColor: Theme.of(context).colorScheme.primary,
                 ),
               ),
             ),
@@ -241,7 +262,6 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
             ElevatedButton(
               onPressed: _saveNote,
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color.fromARGB(255, 229, 192, 255),
               ),
               child: const Text('Kaydet'),
             ),
@@ -265,7 +285,6 @@ class NoteDetailScreen extends StatefulWidget {
     required this.onDelete,
   });
 
-  @override
   _NoteDetailScreenState createState() => _NoteDetailScreenState();
 }
 
@@ -279,9 +298,12 @@ class _NoteDetailScreenState extends State<NoteDetailScreen> {
     Color(0xFFFBFF90),
     Color(0xFFFFADF0),
     Color(0xFFA9FF8A),
+    Color(0xFF5773C6),
+    Color(0xFF784F9E),
+    Color(0xFFCF8CD1),
+    Color(0xFFDE6B8F),
   ];
 
-  @override
   void initState() {
     super.initState();
     _noteController = TextEditingController(text: widget.note['content']);
@@ -298,7 +320,6 @@ class _NoteDetailScreenState extends State<NoteDetailScreen> {
     }
   }
 
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: _selectedColor,
@@ -327,7 +348,7 @@ class _NoteDetailScreenState extends State<NoteDetailScreen> {
                   borderRadius: BorderRadius.circular(8),
                 ),
                 filled: true,
-                fillColor: Colors.white,
+                fillColor: Theme.of(context).colorScheme.primary,
               ),
             ),
             const SizedBox(height: 16),
