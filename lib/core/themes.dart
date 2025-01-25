@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
 const colors = {
-  "primary": Color.fromARGB(255, 229, 192, 255), 
+  "primary": Color.fromARGB(255, 103, 80, 164),
   "onPrimary": Color.fromARGB(255, 255, 255, 255),
   "secondary": Color.fromARGB(255, 229, 192, 255),  
   "onSecondary": Color.fromARGB(255, 255, 255, 255),
   "error": Color.fromARGB(255, 255, 0, 0),
   "onError": Color.fromARGB(255, 241, 241, 241),
-  "surface": Color.fromARGB(255, 255, 255, 255),
+  "surface": Color.fromARGB(255, 244, 246, 255),
   "onSurface": Color.fromARGB(255, 255, 255, 255),
 };
 
@@ -18,7 +18,7 @@ const darkColors = {
   "onSecondary": Color.fromARGB(255, 241, 241, 241),  
   "error": Color.fromARGB(255, 255, 0, 0),
   "onError": Color.fromARGB(255, 241, 241, 241),
-  "surface": Color.fromARGB(255, 4, 4, 68),  
+  "surface": Color.fromARGB(255, 29, 27, 32),
   "onSurface": Color.fromARGB(255, 0, 0, 0),  
 };
 
