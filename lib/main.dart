@@ -17,33 +17,45 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  ThemeMode _themeMode = ThemeMode.system;
+  bool _isDarkMode = false; 
 
-
-  void _toggleTheme() {
-    setState(() {
-      _themeMode = (_themeMode == ThemeMode.dark) ? ThemeMode.light : ThemeMode.dark;
-    });
+Widget build(BuildContext context) {
+    return MaterialApp.router(
+      title: 'Flutter App',
+      themeMode:
+          _isDarkMode ? ThemeMode.dark : ThemeMode.light, 
+      theme: lightTheme,
+      darkTheme: darkTheme,
+      routerConfig: router,
+      debugShowCheckedModeBanner: false,
+    );
   }
 
-  Widget build(BuildContext context) {
-    final GoRouter _router = GoRouter(
-      initialLocation: '/home', 
-      routes: [
-        GoRoute(
-          path: '/loading',
-          builder: (context, state) {
-            return const LoadingScreen(); 
+  void toggleTheme() {
+    setState(() {
+      _isDarkMode = !_isDarkMode; 
+    });
+  }
+}
+
+    final router = GoRouter(
+      initialLocation: '/loading', 
+  routes: [
+    GoRoute(
+      path: '/loading',
+      builder: (context, state) => const LoadingScreen(),
+    ),
+       GoRoute(
+      path: '/home',
+      builder: (context, state) {
+        return HomeScreen(
+          onThemeChange: () {
+            final appState = context.findAncestorStateOfType<_MyAppState>();
+            appState?.toggleTheme(); 
           },
-        ),
-        GoRoute(
-          path: '/home',
-          builder: (context, state) {
-            return HomeScreen(
-              onThemeChange: _toggleTheme, 
-            ); 
-          },
-        ),
+        );
+      },
+    ),
         GoRoute(
       path: '/login', 
       builder: (context, state) => const LoginScreen(),
@@ -56,13 +68,3 @@ class _MyAppState extends State<MyApp> {
       ),
       ],
     );
-
-    return MaterialApp.router(
-      routerConfig: _router,
-      themeMode: _themeMode, 
-      theme: lightTheme,
-      darkTheme: darkTheme,
-      debugShowCheckedModeBanner: false,
-    );
-  }
-}
