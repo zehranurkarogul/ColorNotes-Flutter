@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:go_router/go_router.dart';
 
 class HomeScreen extends StatefulWidget {
   final void Function() onThemeChange;
@@ -57,6 +58,13 @@ class _HomeScreenState extends State<HomeScreen> {
                 Navigator.pop(context);
               },
             ),
+            ListTile(
+            leading: Icon(CupertinoIcons.person),
+            iconColor: Theme.of(context).colorScheme.primary,
+            title: Text('Profil'),
+            textColor: Theme.of(context).colorScheme.primary,
+            onTap: () => context.go('/login'), 
+          )
           ],
         ),
       ),
@@ -173,7 +181,7 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
         content: Text(
           'Lütfen bir not yazın.',
           style: TextStyle(
-            color: Theme.of(context).colorScheme.primary, // Tema rengini burada ayarlıyoruz
+            color: Theme.of(context).colorScheme.primary, 
           ),
         ),
       ),
@@ -187,7 +195,7 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
         content: Text(
           'Lütfen bir renk seçin.',
           style: TextStyle(
-            color: Theme.of(context).colorScheme.primary, // Tema rengini burada ayarlıyoruz
+            color: Theme.of(context).colorScheme.primary, 
           ),
         ),
       ),
