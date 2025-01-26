@@ -89,7 +89,7 @@ class _HomeScreenState extends State<HomeScreen> {
         decoration: const BoxDecoration(
   image: DecorationImage(
     image: AssetImage('assets/images/back.jpg'),
-    fit: BoxFit.cover, // Arka planı tam olarak kaplar
+    fit: BoxFit.cover, 
   ),
 ),
 child: GridView.builder(

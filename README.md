@@ -119,7 +119,7 @@ lib/
 
 ## Ekran Görüntüleri
 
-assets/icons
+assets/icons kısmında mevcuttur
 
 ## Projeye Katkı Sağlama
 
